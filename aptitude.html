@@ -1,0 +1,885 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .page-section {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    
+    .page-section h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .page-section > p {
+        color: #666;
+        margin-bottom: 30px;
+    }
+    
+    .topics-list {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 40px;
+    }
+    
+    .topics-list li {
+        background: #f5f5f5;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border-left: 4px solid #4a90e2;
+        font-weight: 500;
+    }
+    
+    .quiz-container {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+    
+    .quiz-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #eee;
+    }
+    
+    .question-counter {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .timer {
+        font-size: 18px;
+        font-weight: bold;
+        color: #e74c3c;
+        font-family: monospace;
+    }
+    
+    .question-box {
+        margin-bottom: 25px;
+    }
+    
+    .question-text {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    
+    .options {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .option-item {
+        background: #f9f9f9;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 2px solid #e0e0e0;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .option-item:hover {
+        background: #e8f4ff;
+        border-color: #4a90e2;
+    }
+    
+    .option-item input[type="radio"] {
+        margin-right: 10px;
+    }
+    
+    .option-item.selected {
+        background: #e8f4ff;
+        border-color: #4a90e2;
+    }
+    
+    .option-item.correct {
+        background: #d4edda;
+        border-color: #28a745;
+    }
+    
+    .option-item.wrong {
+        background: #f8d7da;
+        border-color: #dc3545;
+    }
+    
+    .quiz-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 500;
+    }
+    
+    .btn-primary {
+        background: #4a90e2;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #357abd;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #545b62;
+    }
+    
+    .result-box {
+        background: #f0f8ff;
+        border: 2px solid #4a90e2;
+        border-radius: 8px;
+        padding: 25px;
+        text-align: center;
+        display: none;
+    }
+    
+    .result-box.show {
+        display: block;
+    }
+    
+    .doubt-section {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 30px;
+        margin: 40px 0 30px 0;
+    }
+    
+    .doubt-section h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .doubt-section p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+    .doubt-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .doubt-form input,
+    .doubt-form select,
+    .doubt-form textarea {
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 15px;
+        font-family: inherit;
+    }
+    
+    .doubt-form input:focus,
+    .doubt-form select:focus,
+    .doubt-form textarea:focus {
+        outline: none;
+        border-color: #4a90e2;
+    }
+    
+    .doubt-form textarea {
+        resize: vertical;
+    }
+    
+    .success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 15px;
+        text-align: center;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .doubts-list {
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .doubts-list h3 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    .doubt-item {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .doubt-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .doubt-author {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .doubt-topic-badge {
+        background: #4a90e2;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 13px;
+    }
+    
+    .doubt-date {
+        color: #999;
+        font-size: 13px;
+    }
+    
+    .doubt-question {
+        color: #333;
+        font-size: 16px;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+    
+    .doubt-answer {
+        background: #f0f8ff;
+        border-left: 3px solid #4a90e2;
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+    
+    .answer-label {
+        font-weight: 600;
+        color: #4a90e2;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .answer-text {
+        color: #555;
+        line-height: 1.6;
+    }
+    
+    .no-answer {
+        color: #999;
+        font-style: italic;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .empty-state {
+        text-align: center;
+        color: #999;
+        padding: 40px;
+    }
+    
+    .score {
+        font-size: 48px;
+        font-weight: bold;
+        color: #4a90e2;
+        margin: 15px 0;
+    }
+    
+    .result-details {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #666;
+    }
+    
+    .start-screen {
+        text-align: center;
+        padding: 40px 20px;
+    }
+    
+    .start-screen h3 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    
+    .topic-select {
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+        margin: 20px auto;
+        display: block;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+    }
+    
+    @media (max-width: 600px) {
+        .quiz-header {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .quiz-buttons {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<section class="page-section">
+    <h2>Aptitude Preparation</h2>
+    <p>Practice Logical Reasoning, Quantitative Aptitude, and Problem-Solving with structured lessons.</p>
+    
+    <ul class="topics-list">
+        <li>Quantitative Aptitude</li>
+        <li>Logical Reasoning</li>
+        <li>Verbal Ability</li>
+        <li>Practice Quizzes</li>
+    </ul>
+    
+    <div class="start-screen" id="startScreen">
+        <h3>Select Topic and Start Quiz</h3>
+        <select class="topic-select" id="topicSelect">
+            <option value="quant">Quantitative Aptitude</option>
+            <option value="logical">Logical Reasoning</option>
+            <option value="verbal">Verbal Ability</option>
+            <option value="mixed">Mixed Practice</option>
+        </select>
+        <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+    </div>
+    
+    <div class="quiz-container" id="quizContainer" style="display: none;">
+        <div class="quiz-header">
+            <span class="question-counter">Question <span id="currentQ">1</span> of <span id="totalQ">10</span></span>
+            <span class="timer" id="timer">10:00</span>
+        </div>
+        
+        <div class="question-box">
+            <div class="question-text" id="questionText">
+                Loading question...
+            </div>
+            
+            <ul class="options" id="optionsList">
+                <!-- Options will be inserted here -->
+            </ul>
+        </div>
+        
+        <div class="quiz-buttons">
+            <button class="btn btn-secondary" onclick="previousQuestion()">Previous</button>
+            <button class="btn btn-primary" onclick="nextQuestion()">Next</button>
+            <button class="btn btn-primary" onclick="submitQuiz()" id="submitBtn" style="display: none;">Submit Quiz</button>
+        </div>
+    </div>
+    
+    <div class="result-box" id="resultBox">
+        <h3>Quiz Completed!</h3>
+        <div class="score" id="scoreDisplay">0/10</div>
+        <div class="result-details">
+            <p>Correct Answers: <strong id="correctCount">0</strong></p>
+            <p>Wrong Answers: <strong id="wrongCount">0</strong></p>
+            <p>Time Taken: <strong id="timeTaken">0:00</strong></p>
+            <p>Percentage: <strong id="percentage">0%</strong></p>
+        </div>
+        <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">Take Another Quiz</button>
+    </div>
+    
+    <div class="doubt-section">
+        <h3>Have Any Doubts?</h3>
+        <p>Ask your question below and our team will help you!</p>
+        
+        <form class="doubt-form" onsubmit="submitDoubt(event)">
+            <input type="text" id="studentName" placeholder="Your Name" required>
+            <select id="doubtTopic" required>
+                <option value="">Select Topic</option>
+                <option value="quant">Quantitative Aptitude</option>
+                <option value="logical">Logical Reasoning</option>
+                <option value="verbal">Verbal Ability</option>
+                <option value="general">General Query</option>
+            </select>
+            <textarea id="doubtQuestion" placeholder="Type your question here..." rows="4" required></textarea>
+            <button type="submit" class="btn btn-primary">Submit Question</button>
+        </form>
+        
+        <div class="success-message" id="successMessage" style="display: none;">
+            ✓ Your question has been submitted! We'll get back to you soon.
+        </div>
+    </div>
+    
+    <div class="doubts-list">
+        <h3>Recent Doubts & Answers</h3>
+        <div id="doubtsList">
+            <!-- Doubts will be loaded here -->
+        </div>
+    </div>
+</section>
+
+<script>
+let questionBank = {
+    quant: [
+        {
+            question: "If a + b = 10 and a - b = 2, what is the value of a?",
+            options: ["4", "6", "8", "10"],
+            correct: 1
+        },
+        {
+            question: "What is 15% of 200?",
+            options: ["25", "30", "35", "40"],
+            correct: 1
+        },
+        {
+            question: "A train travels 60 km in 1 hour. How far will it travel in 2.5 hours?",
+            options: ["120 km", "130 km", "150 km", "180 km"],
+            correct: 2
+        },
+        {
+            question: "If 5x + 3 = 18, what is x?",
+            options: ["2", "3", "4", "5"],
+            correct: 1
+        },
+        {
+            question: "What is 25% of 80?",
+            options: ["15", "20", "25", "30"],
+            correct: 1
+        },
+        {
+            question: "The average of 5 numbers is 20. If one number is excluded, the average becomes 15. What is the excluded number?",
+            options: ["25", "35", "40", "45"],
+            correct: 2
+        },
+        {
+            question: "A shopkeeper sells an item at 20% profit. If the cost price is ₹500, what is the selling price?",
+            options: ["₹550", "₹600", "₹650", "₹700"],
+            correct: 1
+        },
+        {
+            question: "What is the value of (3² + 4²)?",
+            options: ["12", "25", "49", "64"],
+            correct: 1
+        },
+        {
+            question: "If the ratio of boys to girls in a class is 3:2 and there are 15 boys, how many girls are there?",
+            options: ["8", "10", "12", "15"],
+            correct: 1
+        },
+        {
+            question: "What is 0.75 expressed as a fraction in simplest form?",
+            options: ["1/4", "2/3", "3/4", "4/5"],
+            correct: 2
+        }
+    ],
+    logical: [
+        {
+            question: "Complete the series: 2, 6, 12, 20, ?",
+            options: ["28", "30", "32", "34"],
+            correct: 1
+        },
+        {
+            question: "If CAT is coded as DBU, how is DOG coded?",
+            options: ["EPH", "FPI", "DPH", "CPG"],
+            correct: 0
+        },
+        {
+            question: "What is the next number in the series: 1, 4, 9, 16, ?",
+            options: ["20", "25", "30", "36"],
+            correct: 1
+        },
+        {
+            question: "Which number is the odd one out? 2, 4, 6, 9, 10",
+            options: ["2", "4", "9", "10"],
+            correct: 2
+        },
+        {
+            question: "If all roses are flowers and some flowers are red, then:",
+            options: ["All roses are red", "Some roses may be red", "No roses are red", "All flowers are roses"],
+            correct: 1
+        },
+        {
+            question: "Complete: ACE, FHJ, KMO, ?",
+            options: ["PRT", "QSU", "PRS", "QRT"],
+            correct: 0
+        },
+        {
+            question: "In a certain code, COMPUTER is written as RFUVQNPC. How is MEDICINE written?",
+            options: ["EOJDEJFM", "MFEJDJOE", "NFEJDJPF", "EOJDJFME"],
+            correct: 1
+        },
+        {
+            question: "Find the odd one: 3, 7, 15, 27, 63",
+            options: ["3", "7", "27", "63"],
+            correct: 2
+        },
+        {
+            question: "If South-East becomes North and North-East becomes West, what will West become?",
+            options: ["North-East", "South-East", "South-West", "North-West"],
+            correct: 1
+        },
+        {
+            question: "Complete the analogy: Book : Pages :: Tree : ?",
+            options: ["Leaves", "Branches", "Roots", "Forest"],
+            correct: 0
+        }
+    ],
+    verbal: [
+        {
+            question: "What is the synonym of 'ABUNDANT'?",
+            options: ["Scarce", "Plentiful", "Rare", "Limited"],
+            correct: 1
+        },
+        {
+            question: "Choose the correct spelling:",
+            options: ["Occassion", "Occasion", "Ocassion", "Ocasion"],
+            correct: 1
+        },
+        {
+            question: "What is the antonym of 'ANCIENT'?",
+            options: ["Old", "Modern", "Historic", "Traditional"],
+            correct: 1
+        },
+        {
+            question: "Choose the word closest in meaning to 'METICULOUS':",
+            options: ["Careless", "Careful", "Quick", "Slow"],
+            correct: 1
+        },
+        {
+            question: "Fill in the blank: She is _____ intelligent than her sister.",
+            options: ["more", "most", "much", "many"],
+            correct: 0
+        },
+        {
+            question: "Identify the error: 'He don't like coffee.'",
+            options: ["He", "don't", "like", "No error"],
+            correct: 1
+        },
+        {
+            question: "What is the meaning of the idiom 'Break the ice'?",
+            options: ["To start a conversation", "To be angry", "To break something", "To cool down"],
+            correct: 0
+        },
+        {
+            question: "Choose the correct sentence:",
+            options: ["She are going to market", "She is going to market", "She going to market", "She be going to market"],
+            correct: 1
+        },
+        {
+            question: "What is the synonym of 'APEX'?",
+            options: ["Bottom", "Peak", "Middle", "Side"],
+            correct: 1
+        },
+        {
+            question: "Complete the sentence: Neither John nor his friends _____ present.",
+            options: ["is", "are", "was", "were"],
+            correct: 3
+        }
+    ],
+    mixed: [
+        {
+            question: "What is 20% of 150?",
+            options: ["25", "30", "35", "40"],
+            correct: 1
+        },
+        {
+            question: "Complete the pattern: A1, C3, E5, G7, ?",
+            options: ["H8", "I9", "I8", "H9"],
+            correct: 1
+        },
+        {
+            question: "Synonym of 'RAPID':",
+            options: ["Slow", "Fast", "Steady", "Calm"],
+            correct: 1
+        },
+        {
+            question: "If 3x = 27, what is x?",
+            options: ["6", "7", "8", "9"],
+            correct: 3
+        },
+        {
+            question: "Which is different? Square, Circle, Triangle, Rectangle",
+            options: ["Square", "Circle", "Triangle", "Rectangle"],
+            correct: 1
+        },
+        {
+            question: "Antonym of 'EXPAND':",
+            options: ["Grow", "Contract", "Increase", "Enlarge"],
+            correct: 1
+        },
+        {
+            question: "What comes next? 5, 10, 20, 40, ?",
+            options: ["60", "70", "80", "90"],
+            correct: 2
+        },
+        {
+            question: "The ratio 2:3 is the same as:",
+            options: ["4:6", "3:2", "2:5", "5:3"],
+            correct: 0
+        },
+        {
+            question: "Choose correct: 'They was/were happy'",
+            options: ["was", "were", "both", "none"],
+            correct: 1
+        },
+        {
+            question: "Average of 10, 20, 30, 40:",
+            options: ["20", "25", "30", "35"],
+            correct: 1
+        }
+    ]
+};
+
+let questions = [];
+
+let currentQuestion = 0;
+let userAnswers = [];
+let timerInterval;
+let timeLeft = 600; // 10 minutes in seconds
+let startTime;
+
+function startQuiz() {
+    let selectedTopic = document.getElementById('topicSelect').value;
+    questions = [...questionBank[selectedTopic]]; // Load questions based on selected topic
+    
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('quizContainer').style.display = 'block';
+    startTime = Date.now();
+    startTimer();
+    loadQuestion();
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        document.getElementById('timer').textContent = 
+            minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+        
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            submitQuiz();
+        }
+    }, 1000);
+}
+
+function loadQuestion() {
+    let q = questions[currentQuestion];
+    document.getElementById('questionText').textContent = q.question;
+    document.getElementById('currentQ').textContent = currentQuestion + 1;
+    document.getElementById('totalQ').textContent = questions.length;
+    
+    let optionsHTML = '';
+    q.options.forEach((option, index) => {
+        let checked = userAnswers[currentQuestion] === index ? 'checked' : '';
+        let selected = userAnswers[currentQuestion] === index ? 'selected' : '';
+        optionsHTML += `
+            <li class="option-item ${selected}" onclick="selectOption(${index})">
+                <input type="radio" name="option" value="${index}" ${checked}>
+                ${option}
+            </li>
+        `;
+    });
+    
+    document.getElementById('optionsList').innerHTML = optionsHTML;
+    
+    // Show submit button on last question
+    if (currentQuestion === questions.length - 1) {
+        document.getElementById('submitBtn').style.display = 'inline-block';
+    } else {
+        document.getElementById('submitBtn').style.display = 'none';
+    }
+}
+
+function selectOption(index) {
+    userAnswers[currentQuestion] = index;
+    let options = document.querySelectorAll('.option-item');
+    options.forEach(opt => opt.classList.remove('selected'));
+    options[index].classList.add('selected');
+    
+    // Auto-check the radio button
+    document.querySelectorAll('input[name="option"]')[index].checked = true;
+}
+
+function nextQuestion() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+    }
+}
+
+function submitQuiz() {
+    clearInterval(timerInterval);
+    
+    let correct = 0;
+    let wrong = 0;
+    
+    questions.forEach((q, index) => {
+        if (userAnswers[index] === q.correct) {
+            correct++;
+        } else if (userAnswers[index] !== undefined) {
+            wrong++;
+        }
+    });
+    
+    let timeTaken = Math.floor((Date.now() - startTime) / 1000);
+    let minutes = Math.floor(timeTaken / 60);
+    let seconds = timeTaken % 60;
+    
+    let percentage = Math.round((correct / questions.length) * 100);
+    
+    document.getElementById('scoreDisplay').textContent = correct + '/' + questions.length;
+    document.getElementById('correctCount').textContent = correct;
+    document.getElementById('wrongCount').textContent = wrong;
+    document.getElementById('timeTaken').textContent = minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    document.getElementById('percentage').textContent = percentage + '%';
+    
+    document.getElementById('quizContainer').style.display = 'none';
+    document.getElementById('resultBox').classList.add('show');
+}
+
+function restartQuiz() {
+    currentQuestion = 0;
+    userAnswers = [];
+    timeLeft = 600;
+    document.getElementById('resultBox').classList.remove('show');
+    document.getElementById('startScreen').style.display = 'block';
+}
+
+// Doubt Management System
+let doubtsDatabase = [
+    {
+        id: 1,
+        name: "Rahul Kumar",
+        topic: "quant",
+        question: "How do I solve time and work problems quickly?",
+        answer: "Use the formula: Work = Rate × Time. Find the work done per unit time by each person, then add them together for combined work. Practice with LCM method for faster calculations.",
+        date: "2026-01-12"
+    },
+    {
+        id: 2,
+        name: "Priya Sharma",
+        topic: "logical",
+        question: "What's the trick for coding-decoding questions?",
+        answer: "Look for patterns: forward/backward shifts in alphabet, position swapping, or number patterns. Write down the alphabet and mark the changes to spot the pattern clearly.",
+        date: "2026-01-13"
+    },
+    {
+        id: 3,
+        name: "Amit Singh",
+        topic: "verbal",
+        question: "How to improve vocabulary for verbal section?",
+        answer: "Read daily for 30 mins, make word lists with synonyms/antonyms, use flashcards, and learn root words. Focus on commonly asked words in previous papers.",
+        date: "2026-01-14"
+    }
+];
+
+function submitDoubt(event) {
+    event.preventDefault();
+    
+    let name = document.getElementById('studentName').value;
+    let topic = document.getElementById('doubtTopic').value;
+    let question = document.getElementById('doubtQuestion').value;
+    
+    // Create new doubt object
+    let newDoubt = {
+        id: doubtsDatabase.length + 1,
+        name: name,
+        topic: topic,
+        question: question,
+        answer: null,
+        date: new Date().toISOString().split('T')[0]
+    };
+    
+    // Add to database
+    doubtsDatabase.unshift(newDoubt); // Add at beginning
+    
+    // Show success message
+    document.getElementById('successMessage').style.display = 'block';
+    
+    // Clear form
+    document.getElementById('studentName').value = '';
+    document.getElementById('doubtTopic').value = '';
+    document.getElementById('doubtQuestion').value = '';
+    
+    // Hide success message after 3 seconds
+    setTimeout(() => {
+        document.getElementById('successMessage').style.display = 'none';
+    }, 3000);
+    
+    // Reload doubts list
+    loadDoubts();
+}
+
+function loadDoubts() {
+    let doubtsHTML = '';
+    
+    if (doubtsDatabase.length === 0) {
+        doubtsHTML = '<div class="empty-state">No doubts yet. Be the first to ask!</div>';
+    } else {
+        doubtsDatabase.forEach(doubt => {
+            let topicName = {
+                'quant': 'Quantitative',
+                'logical': 'Logical',
+                'verbal': 'Verbal',
+                'general': 'General'
+            }[doubt.topic] || doubt.topic;
+            
+            doubtsHTML += `
+                <div class="doubt-item">
+                    <div class="doubt-header">
+                        <span class="doubt-author">${doubt.name}</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="doubt-topic-badge">${topicName}</span>
+                            <span class="doubt-date">${doubt.date}</span>
+                        </div>
+                    </div>
+                    <div class="doubt-question">${doubt.question}</div>
+                    ${doubt.answer ? `
+                        <div class="doubt-answer">
+                            <span class="answer-label">Admin Answer:</span>
+                            <div class="answer-text">${doubt.answer}</div>
+                        </div>
+                    ` : '<div class="no-answer">Waiting for admin response...</div>'}
+                </div>
+            `;
+        });
+    }
+    
+    document.getElementById('doubtsList').innerHTML = doubtsHTML;
+}
+
+// Load doubts on page load
+window.addEventListener('DOMContentLoaded', () => {
+    loadDoubts();
+});
+</script>
+
+{% endblock %}

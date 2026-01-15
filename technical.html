@@ -1,0 +1,616 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="tech-prep-page">
+    <div class="page-header">
+        <h1>Technical Preparation</h1>
+        <p>Master Programming, Data Structures, Databases, and Core Concepts</p>
+    </div>
+
+    <!-- Topic Selection Tabs -->
+    <div class="topics-nav">
+        <button class="topic-btn active" data-topic="programming">Programming</button>
+        <button class="topic-btn" data-topic="dsa">DSA</button>
+        <button class="topic-btn" data-topic="database">Database</button>
+        <button class="topic-btn" data-topic="mcqs">Technical MCQs</button>
+    </div>
+
+    <!-- Programming Section -->
+    <div class="topic-section active" id="programming">
+        <h2>Programming Fundamentals</h2>
+        
+        <div class="content-grid">
+            <div class="theory-card">
+                <h3>📚 Key Concepts</h3>
+                <ul class="concept-list">
+                    <li>
+                        <strong>Variables & Data Types</strong>
+                        <p>int, float, string, boolean - Foundation of all programming</p>
+                    </li>
+                    <li>
+                        <strong>Control Structures</strong>
+                        <p>if-else, loops (for, while), switch statements</p>
+                    </li>
+                    <li>
+                        <strong>Functions</strong>
+                        <p>Reusable code blocks, parameters, return values</p>
+                    </li>
+                    <li>
+                        <strong>OOP Concepts</strong>
+                        <p>Classes, Objects, Inheritance, Polymorphism, Encapsulation</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <h3>💻 Practice Problems</h3>
+                <div class="problem-item">
+                    <h4>1. Reverse a String</h4>
+                    <p>Write a function to reverse a given string.</p>
+                    <code>Input: "hello" → Output: "olleh"</code>
+                </div>
+                <div class="problem-item">
+                    <h4>2. Check Prime Number</h4>
+                    <p>Create a function that checks if a number is prime.</p>
+                    <code>Input: 7 → Output: True</code>
+                </div>
+                <div class="problem-item">
+                    <h4>3. Fibonacci Series</h4>
+                    <p>Generate first n numbers of Fibonacci sequence.</p>
+                    <code>Input: n=5 → Output: [0, 1, 1, 2, 3]</code>
+                </div>
+            </div>
+
+            <div class="mcq-card">
+                <h3>✅ Quick Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q: Which is NOT a primitive data type in Python?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="q1"> int</label>
+                        <label><input type="radio" name="q1"> float</label>
+                        <label><input type="radio" name="q1"> array</label>
+                        <label><input type="radio" name="q1"> str</label>
+                    </div>
+                    <button class="check-btn">Check Answer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DSA Section -->
+    <div class="topic-section" id="dsa">
+        <h2>Data Structures & Algorithms</h2>
+        
+        <div class="content-grid">
+            <div class="theory-card">
+                <h3>📚 Key Concepts</h3>
+                <ul class="concept-list">
+                    <li>
+                        <strong>Arrays</strong>
+                        <p>Sequential collection, O(1) access, insertion O(n)</p>
+                    </li>
+                    <li>
+                        <strong>Linked Lists</strong>
+                        <p>Node-based structure, dynamic size, O(n) search</p>
+                    </li>
+                    <li>
+                        <strong>Stacks & Queues</strong>
+                        <p>LIFO vs FIFO, push/pop operations, O(1) access</p>
+                    </li>
+                    <li>
+                        <strong>Trees</strong>
+                        <p>Binary Trees, BST, Tree Traversals (Inorder, Preorder, Postorder)</p>
+                    </li>
+                    <li>
+                        <strong>Sorting Algorithms</strong>
+                        <p>Bubble O(n²), Quick O(n log n), Merge O(n log n)</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <h3>💻 Practice Problems</h3>
+                <div class="problem-item">
+                    <h4>1. Two Sum Problem</h4>
+                    <p>Find two numbers in an array that add up to a target.</p>
+                    <code>arr = [2,7,11,15], target = 9 → Output: [0,1]</code>
+                </div>
+                <div class="problem-item">
+                    <h4>2. Reverse Linked List</h4>
+                    <p>Reverse a singly linked list.</p>
+                    <code>1→2→3→4 → Output: 4→3→2→1</code>
+                </div>
+                <div class="problem-item">
+                    <h4>3. Valid Parentheses</h4>
+                    <p>Check if string has valid parentheses using stack.</p>
+                    <code>Input: "({[]})" → Output: True</code>
+                </div>
+                <div class="problem-item">
+                    <h4>4. Binary Search</h4>
+                    <p>Implement binary search on sorted array.</p>
+                    <code>arr = [1,3,5,7,9], target = 5 → Output: 2</code>
+                </div>
+            </div>
+
+            <div class="mcq-card">
+                <h3>✅ Quick Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q: What is the time complexity of accessing an element in an array?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="q2"> O(n)</label>
+                        <label><input type="radio" name="q2"> O(log n)</label>
+                        <label><input type="radio" name="q2"> O(1)</label>
+                        <label><input type="radio" name="q2"> O(n²)</label>
+                    </div>
+                    <button class="check-btn">Check Answer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Database Section -->
+    <div class="topic-section" id="database">
+        <h2>Database Management</h2>
+        
+        <div class="content-grid">
+            <div class="theory-card">
+                <h3>📚 Key Concepts</h3>
+                <ul class="concept-list">
+                    <li>
+                        <strong>SQL Basics</strong>
+                        <p>SELECT, INSERT, UPDATE, DELETE, WHERE, JOIN</p>
+                    </li>
+                    <li>
+                        <strong>Keys</strong>
+                        <p>Primary Key, Foreign Key, Unique Key, Composite Key</p>
+                    </li>
+                    <li>
+                        <strong>Normalization</strong>
+                        <p>1NF, 2NF, 3NF - Eliminating redundancy</p>
+                    </li>
+                    <li>
+                        <strong>Joins</strong>
+                        <p>INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN</p>
+                    </li>
+                    <li>
+                        <strong>Transactions</strong>
+                        <p>ACID properties - Atomicity, Consistency, Isolation, Durability</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <h3>💻 Practice Questions</h3>
+                <div class="problem-item">
+                    <h4>1. Select All Records</h4>
+                    <p>Write a query to get all employees from 'employees' table.</p>
+                    <code>SELECT * FROM employees;</code>
+                </div>
+                <div class="problem-item">
+                    <h4>2. Filter with WHERE</h4>
+                    <p>Get employees with salary > 50000.</p>
+                    <code>SELECT * FROM employees WHERE salary > 50000;</code>
+                </div>
+                <div class="problem-item">
+                    <h4>3. Join Tables</h4>
+                    <p>Get employee names with their department names.</p>
+                    <code>SELECT e.name, d.dept_name FROM employees e JOIN departments d ON e.dept_id = d.id;</code>
+                </div>
+                <div class="problem-item">
+                    <h4>4. Aggregate Functions</h4>
+                    <p>Find average salary by department.</p>
+                    <code>SELECT dept_id, AVG(salary) FROM employees GROUP BY dept_id;</code>
+                </div>
+            </div>
+
+            <div class="mcq-card">
+                <h3>✅ Quick Quiz</h3>
+                <div class="quiz-question">
+                    <p><strong>Q: Which key uniquely identifies a record in a table?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="q3"> Foreign Key</label>
+                        <label><input type="radio" name="q3"> Primary Key</label>
+                        <label><input type="radio" name="q3"> Unique Key</label>
+                        <label><input type="radio" name="q3"> Candidate Key</label>
+                    </div>
+                    <button class="check-btn">Check Answer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical MCQs Section -->
+    <div class="topic-section" id="mcqs">
+        <h2>Technical MCQs Practice</h2>
+        
+        <div class="mcq-full-section">
+            <div class="mcq-block">
+                <h3>Operating Systems</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1: Which scheduling algorithm is non-preemptive?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="os1"> Round Robin</label>
+                        <label><input type="radio" name="os1"> FCFS</label>
+                        <label><input type="radio" name="os1"> Priority Scheduling</label>
+                        <label><input type="radio" name="os1"> Multilevel Queue</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p><strong>Q2: What is a deadlock?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="os2"> Process waiting indefinitely</label>
+                        <label><input type="radio" name="os2"> Two processes exchanging data</label>
+                        <label><input type="radio" name="os2"> CPU idle state</label>
+                        <label><input type="radio" name="os2"> Memory overflow</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mcq-block">
+                <h3>Computer Networks</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1: Which layer of OSI model handles routing?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="net1"> Data Link Layer</label>
+                        <label><input type="radio" name="net1"> Network Layer</label>
+                        <label><input type="radio" name="net1"> Transport Layer</label>
+                        <label><input type="radio" name="net1"> Application Layer</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p><strong>Q2: What is the default port for HTTP?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="net2"> 21</label>
+                        <label><input type="radio" name="net2"> 80</label>
+                        <label><input type="radio" name="net2"> 443</label>
+                        <label><input type="radio" name="net2"> 8080</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mcq-block">
+                <h3>Object-Oriented Programming</h3>
+                <div class="quiz-question">
+                    <p><strong>Q1: What is polymorphism?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="oop1"> Many forms of same entity</label>
+                        <label><input type="radio" name="oop1"> Data hiding</label>
+                        <label><input type="radio" name="oop1"> Code reusability</label>
+                        <label><input type="radio" name="oop1"> Object creation</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p><strong>Q2: Which supports multiple inheritance in Java?</strong></p>
+                    <div class="options">
+                        <label><input type="radio" name="oop2"> Classes</label>
+                        <label><input type="radio" name="oop2"> Interfaces</label>
+                        <label><input type="radio" name="oop2"> Abstract Classes</label>
+                        <label><input type="radio" name="oop2"> None</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-all-btn">Submit All Answers</button>
+        </div>
+    </div>
+</section>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tech-prep-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-header {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.topics-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.topic-btn {
+    padding: 12px 30px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.topic-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.topic-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.topic-section {
+    display: none;
+}
+
+.topic-section.active {
+    display: block;
+    animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.topic-section h2 {
+    font-size: 2rem;
+    color: #2d3748;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.theory-card, .practice-card, .mcq-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.theory-card h3, .practice-card h3, .mcq-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #2d3748;
+}
+
+.concept-list {
+    list-style: none;
+}
+
+.concept-list li {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.concept-list strong {
+    color: #667eea;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.concept-list p {
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.problem-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #48bb78;
+}
+
+.problem-item h4 {
+    color: #2d3748;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.problem-item p {
+    color: #4a5568;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.problem-item code {
+    display: block;
+    background: #2d3748;
+    color: #68d391;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    overflow-x: auto;
+}
+
+.quiz-question {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.quiz-question p {
+    margin-bottom: 15px;
+    color: #2d3748;
+    font-size: 1rem;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.options label:hover {
+    border-color: #667eea;
+    background: #edf2f7;
+}
+
+.options input[type="radio"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.check-btn {
+    padding: 10px 25px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.check-btn:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+}
+
+.mcq-full-section {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.mcq-block {
+    margin-bottom: 35px;
+    padding: 20px;
+    background: #f7fafc;
+    border-radius: 8px;
+}
+
+.mcq-block h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.submit-all-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.submit-all-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .topics-nav {
+        flex-direction: column;
+    }
+    
+    .topic-btn {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+// Tab switching functionality
+document.querySelectorAll('.topic-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Remove active class from all buttons and sections
+        document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.topic-section').forEach(s => s.classList.remove('active'));
+        
+        // Add active class to clicked button and corresponding section
+        this.classList.add('active');
+        const topic = this.getAttribute('data-topic');
+        document.getElementById(topic).classList.add('active');
+        
+        // Scroll to top of section
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+});
+
+// Check answer functionality
+document.querySelectorAll('.check-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const question = this.closest('.quiz-question');
+        const selected = question.querySelector('input[type="radio"]:checked');
+        
+        if (!selected) {
+            alert('Please select an answer!');
+            return;
+        }
+        
+        // Simple feedback (you can enhance this with correct answers)
+        this.textContent = 'Answer Submitted ✓';
+        this.style.background = '#48bb78';
+        this.disabled = true;
+    });
+});
+</script>
+{% endblock %}

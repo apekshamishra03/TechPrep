@@ -1,0 +1,701 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .interview-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .search-bar {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .search-bar input {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: border-color 0.3s;
+    }
+
+    .search-bar input:focus {
+        outline: none;
+        border-color: #67d4ec;
+    }
+
+    .tabs {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        background: white;
+        color: #67d4ec;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .tab-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .tab-btn.active {
+        background: linear-gradient(135deg, #67d4ec 0%, #6c6ce7 100%);
+        color: white;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 20px;
+    }
+
+    .categories {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        height: fit-content;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .categories h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+    }
+
+    .category-btn {
+        width: 100%;
+        background: #f5f5f5;
+        border: none;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: #333;
+        font-size: 0.95em;
+    }
+
+    .category-btn:hover {
+        background: #e0e0e0;
+    }
+
+    .category-btn.active {
+        background: #67d4ec;
+        color: white;
+    }
+
+    .questions-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .question-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+    }
+
+    .question-card:hover {
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+
+    .question-tags {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .tag {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+    }
+
+    .tag.easy {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .tag.medium {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .tag.hard {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .tag.company {
+        background: #e7f3ff;
+        color: #004085;
+    }
+
+    .question-title {
+        color: #333;
+        font-size: 1.15em;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .expand-btn {
+        background: none;
+        border: none;
+        color: #67d4ec;
+        font-size: 1.5em;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+
+    .expand-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .answer-section {
+        display: none;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .answer-section.show {
+        display: block;
+        animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .answer-box {
+        background: #f0f7ff;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border-left: 4px solid #67d4ec;
+    }
+
+    .answer-box h4 {
+        color: #67d4ec;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+
+    .answer-box p {
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .tips-box {
+        background: #f0fff4;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #38a169;
+    }
+
+    .tips-box h4 {
+        color: #38a169;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+
+    .tips-box ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .tips-box li {
+        color: #333;
+        padding: 5px 0;
+        padding-left: 20px;
+        position: relative;
+    }
+
+    .tips-box li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #38a169;
+        font-weight: bold;
+    }
+
+    .mock-interview {
+        background: linear-gradient(135deg, #67d4ec 0%, #6c6ce7 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        margin-top: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .mock-interview h2 {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+
+    .mock-interview p {
+        margin-bottom: 20px;
+        opacity: 0.9;
+    }
+
+    .mock-interview button {
+        background: white;
+        color: #67d4ec;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .mock-interview button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 768px) {
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="interview-container">
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 Search questions..." onkeyup="searchQuestions()">
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('technical')">💻 Technical</button>
+        <button class="tab-btn" onclick="switchTab('hr')">👥 HR Round</button>
+        <button class="tab-btn" onclick="switchTab('aptitude')">📊 Aptitude</button>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+        <!-- Categories Sidebar -->
+        <div class="categories">
+            <h3>Categories</h3>
+            <div id="categoryButtons">
+                <!-- Categories will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Questions Container -->
+        <div class="questions-container" id="questionsContainer">
+            <!-- Questions will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Mock Interview CTA -->
+    <div class="mock-interview">
+        <h2>Ready for a Mock Interview?</h2>
+        <p>Practice with AI-powered mock interviews and get instant feedback</p>
+        <button onclick="alert('Mock interview feature coming soon!')">▶️ Start Mock Interview</button>
+    </div>
+</div>
+
+<script>
+    // Data Structure
+    const questionsData = {
+        technical: [
+            {
+                id: 1,
+                question: "What is the difference between Array and Linked List?",
+                difficulty: "easy",
+                category: "dsa",
+                companies: ["Google", "Amazon", "Microsoft"],
+                answer: "Arrays store elements in contiguous memory locations with fixed size, offering O(1) random access. Linked Lists use non-contiguous memory with dynamic size, requiring O(n) for access but O(1) for insertion/deletion at known positions.",
+                tips: [
+                    "Draw diagrams to explain the memory layout",
+                    "Mention time complexities for common operations",
+                    "Give real-world examples like ArrayList vs LinkedList in Java"
+                ]
+            },
+            {
+                id: 2,
+                question: "Explain the concept of polymorphism with an example",
+                difficulty: "medium",
+                category: "oops",
+                companies: ["TCS", "Infosys", "Wipro"],
+                answer: "Polymorphism allows objects to take multiple forms. Method overloading (compile-time) and method overriding (runtime) are two types. Example: A Shape class with draw() method implemented differently in Circle and Rectangle subclasses.",
+                tips: [
+                    "Provide code examples in your preferred language",
+                    "Explain compile-time vs runtime polymorphism",
+                    "Mention benefits in software design and flexibility"
+                ]
+            },
+            {
+                id: 3,
+                question: "What is normalization in DBMS? Explain different normal forms.",
+                difficulty: "medium",
+                category: "dbms",
+                companies: ["Oracle", "IBM", "SAP"],
+                answer: "Normalization organizes database to reduce redundancy and dependency. 1NF: Atomic values only. 2NF: No partial dependencies. 3NF: No transitive dependencies. BCNF: Stricter version of 3NF where every determinant is a candidate key.",
+                tips: [
+                    "Use table examples to demonstrate each normal form",
+                    "Explain each normal form step by step",
+                    "Mention practical benefits like data integrity and storage optimization"
+                ]
+            },
+            {
+                id: 4,
+                question: "What is the time complexity of Binary Search?",
+                difficulty: "easy",
+                category: "algorithms",
+                companies: ["Google", "Facebook", "Amazon"],
+                answer: "Binary Search has O(log n) time complexity. It works by repeatedly dividing the search interval in half. The array must be sorted for binary search to work correctly.",
+                tips: [
+                    "Explain the divide and conquer approach",
+                    "Mention the prerequisite of sorted data",
+                    "Compare with linear search O(n)"
+                ]
+            },
+            {
+                id: 5,
+                question: "Explain the concept of indexing in databases",
+                difficulty: "medium",
+                category: "dbms",
+                companies: ["Amazon", "Microsoft", "Uber"],
+                answer: "Database indexing creates a data structure (usually B-tree) that improves query speed. It's like a book index - helps locate data without scanning entire table. Trade-off: faster reads but slower writes and extra storage.",
+                tips: [
+                    "Discuss different types of indexes (clustered, non-clustered)",
+                    "Explain when to use indexes and when not to",
+                    "Mention impact on INSERT, UPDATE, DELETE operations"
+                ]
+            }
+        ],
+        hr: [
+            {
+                id: 1,
+                question: "Tell me about yourself",
+                difficulty: "easy",
+                category: "behavioral",
+                companies: ["All Companies"],
+                answer: "Structure your answer as: Present (current role/studies) → Past (relevant experience) → Future (why this role). Keep it 1-2 minutes, focus on professional journey and achievements relevant to the job position.",
+                tips: [
+                    "Prepare a 2-minute elevator pitch",
+                    "Focus on achievements, not just responsibilities",
+                    "Connect your background to the job role",
+                    "Practice multiple times to sound natural"
+                ]
+            },
+            {
+                id: 2,
+                question: "Describe a challenging situation and how you handled it",
+                difficulty: "medium",
+                category: "situational",
+                companies: ["Google", "Amazon", "Facebook"],
+                answer: "Use STAR method: Situation (context) → Task (your responsibility) → Action (specific steps you took) → Result (quantifiable outcome). Choose a relevant example showing problem-solving, teamwork, and leadership.",
+                tips: [
+                    "Always use the STAR framework",
+                    "Quantify results with numbers or percentages",
+                    "Show what you learned from the experience",
+                    "Stay positive even when describing challenges"
+                ]
+            },
+            {
+                id: 3,
+                question: "Why do you want to work for our company?",
+                difficulty: "medium",
+                category: "company",
+                companies: ["All Companies"],
+                answer: "Research the company thoroughly. Mention specific products, culture, values, or recent achievements you admire. Connect your skills and career goals with the company's mission. Show genuine enthusiasm and avoid generic answers.",
+                tips: [
+                    "Research company website, news, and LinkedIn",
+                    "Be specific - mention actual products or initiatives",
+                    "Show alignment with company values and culture",
+                    "Avoid answers like 'good salary' or 'reputed company'"
+                ]
+            },
+            {
+                id: 4,
+                question: "What are your strengths and weaknesses?",
+                difficulty: "easy",
+                category: "behavioral",
+                companies: ["TCS", "Infosys", "Accenture"],
+                answer: "For strengths: Choose 2-3 relevant to the job with specific examples. For weaknesses: Pick a real but minor weakness and explain how you're actively working to improve it. Show self-awareness and growth mindset.",
+                tips: [
+                    "Back strengths with concrete examples",
+                    "Don't say 'I'm a perfectionist' as a weakness",
+                    "Show how you're improving your weakness",
+                    "Keep it relevant to the job role"
+                ]
+            },
+            {
+                id: 5,
+                question: "Where do you see yourself in 5 years?",
+                difficulty: "medium",
+                category: "motivation",
+                companies: ["Microsoft", "Google", "Amazon"],
+                answer: "Show ambition aligned with company growth. Mention skill development, increasing responsibilities, and potential leadership roles. Avoid being too specific or saying you'll be in a different company. Focus on professional growth within the organization.",
+                tips: [
+                    "Align your goals with company's career path",
+                    "Show commitment to growth and learning",
+                    "Avoid mentioning competitor companies",
+                    "Balance ambition with realism"
+                ]
+            }
+        ],
+        aptitude: [
+            {
+                id: 1,
+                question: "If a train travels 60 km/h for 2 hours, then 90 km/h for 3 hours, what is the average speed?",
+                difficulty: "easy",
+                category: "quantitative",
+                companies: ["TCS", "Cognizant", "Accenture"],
+                answer: "Average speed = Total distance / Total time. Distance = (60×2) + (90×3) = 120 + 270 = 390 km. Time = 5 hours. Average speed = 390/5 = 78 km/h.",
+                tips: [
+                    "Don't just average the speeds directly",
+                    "Always calculate total distance first",
+                    "Remember: Average speed ≠ Average of speeds",
+                    "Double-check your arithmetic"
+                ]
+            },
+            {
+                id: 2,
+                question: "Find the missing number in the series: 2, 6, 12, 20, 30, ?",
+                difficulty: "medium",
+                category: "logical",
+                companies: ["Infosys", "Wipro", "HCL"],
+                answer: "Pattern: 1×2, 2×3, 3×4, 4×5, 5×6, 6×7 = 42. The differences between consecutive terms are 4, 6, 8, 10, 12 (increasing by 2 each time).",
+                tips: [
+                    "Look for differences between consecutive terms",
+                    "Check for multiplication patterns",
+                    "Verify your answer fits the pattern",
+                    "Try multiple approaches if stuck"
+                ]
+            },
+            {
+                id: 3,
+                question: "A can complete a work in 10 days, B in 15 days. How long will they take working together?",
+                difficulty: "medium",
+                category: "quantitative",
+                companies: ["TCS", "Wipro", "Cognizant"],
+                answer: "A's one day work = 1/10, B's one day work = 1/15. Together = 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6. They complete work in 6 days.",
+                tips: [
+                    "Calculate individual rates first",
+                    "Add the rates for combined work",
+                    "Use LCM for easier calculation",
+                    "Always simplify fractions"
+                ]
+            },
+            {
+                id: 4,
+                question: "If COMPUTER is coded as RFUVQNPC, how is MACHINE coded?",
+                difficulty: "medium",
+                category: "logical",
+                companies: ["Infosys", "Capgemini", "TCS"],
+                answer: "Pattern: Each letter is shifted +3 positions in reverse order. MACHINE reversed is ENIHCAM. Shifting +3: HQLMFDP. Answer: HQLMFDP",
+                tips: [
+                    "Identify the pattern - reversal and shifting",
+                    "Work step by step",
+                    "Verify with given example",
+                    "Practice common coding-decoding patterns"
+                ]
+            },
+            {
+                id: 5,
+                question: "The ratio of boys to girls in a class is 3:2. If there are 45 students, how many girls are there?",
+                difficulty: "easy",
+                category: "quantitative",
+                companies: ["Accenture", "Cognizant", "TCS"],
+                answer: "Ratio parts: 3+2 = 5 parts. Each part = 45/5 = 9 students. Girls = 2 parts = 2×9 = 18 girls.",
+                tips: [
+                    "Add ratio parts to get total parts",
+                    "Divide total by sum of ratio",
+                    "Multiply by required ratio part",
+                    "Verify: 27 boys + 18 girls = 45 ✓"
+                ]
+            }
+        ]
+    };
+
+    const categories = {
+        technical: [
+            { id: "all", name: "All Questions", count: 0 },
+            { id: "dsa", name: "Data Structures", count: 0 },
+            { id: "algorithms", name: "Algorithms", count: 0 },
+            { id: "oops", name: "OOP Concepts", count: 0 },
+            { id: "dbms", name: "DBMS", count: 0 }
+        ],
+        hr: [
+            { id: "all", name: "All Questions", count: 0 },
+            { id: "behavioral", name: "Behavioral", count: 0 },
+            { id: "situational", name: "Situational", count: 0 },
+            { id: "motivation", name: "Motivation", count: 0 },
+            { id: "company", name: "Company-Specific", count: 0 }
+        ],
+        aptitude: [
+            { id: "all", name: "All Questions", count: 0 },
+            { id: "logical", name: "Logical Reasoning", count: 0 },
+            { id: "quantitative", name: "Quantitative", count: 0 },
+            { id: "verbal", name: "Verbal Ability", count: 0 }
+        ]
+    };
+
+    let currentTab = 'technical';
+    let currentCategory = 'all';
+
+    // Initialize
+    function init() {
+        updateCategoryCounts();
+        renderCategories();
+        renderQuestions();
+    }
+
+    // Update category counts
+    function updateCategoryCounts() {
+        Object.keys(questionsData).forEach(tab => {
+            categories[tab][0].count = questionsData[tab].length;
+            categories[tab].slice(1).forEach(cat => {
+                cat.count = questionsData[tab].filter(q => q.category === cat.id).length;
+            });
+        });
+    }
+
+    // Switch tab
+    function switchTab(tab) {
+        currentTab = tab;
+        currentCategory = 'all';
+        
+        // Update tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        renderCategories();
+        renderQuestions();
+    }
+
+    // Render categories
+    function renderCategories() {
+        const container = document.getElementById('categoryButtons');
+        container.innerHTML = categories[currentTab].map(cat => `
+            <button class="category-btn ${currentCategory === cat.id ? 'active' : ''}" 
+                    onclick="filterByCategory('${cat.id}')">
+                ${cat.name} (${cat.count})
+            </button>
+        `).join('');
+    }
+
+    // Filter by category
+    function filterByCategory(category) {
+        currentCategory = category;
+        renderCategories();
+        renderQuestions();
+    }
+
+    // Render questions
+    function renderQuestions() {
+        const container = document.getElementById('questionsContainer');
+        let questions = questionsData[currentTab];
+        
+        // Filter by category
+        if (currentCategory !== 'all') {
+            questions = questions.filter(q => q.category === currentCategory);
+        }
+        
+        // Filter by search
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        if (searchTerm) {
+            questions = questions.filter(q => 
+                q.question.toLowerCase().includes(searchTerm) ||
+                q.answer.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        if (questions.length === 0) {
+            container.innerHTML = `
+                <div class="question-card">
+                    <p style="text-align: center; color: #999;">No questions found. Try adjusting your search or filters.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = questions.map(q => `
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(${q.id})">
+                    <div style="flex: 1;">
+                        <div class="question-tags">
+                            <span class="tag ${q.difficulty}">${q.difficulty.toUpperCase()}</span>
+                            ${q.companies.slice(0, 3).map(company => 
+                                `<span class="tag company">${company}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="question-title">${q.question}</div>
+                    </div>
+                    <button class="expand-btn">▼</button>
+                </div>
+                
+                <div class="answer-section" id="answer-${q.id}">
+                    <div class="answer-box">
+                        <h4>✅ Answer</h4>
+                        <p>${q.answer}</p>
+                    </div>
+                    
+                    <div class="tips-box">
+                        <h4>⭐ Pro Tips</h4>
+                        <ul>
+                            ${q.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Toggle answer visibility
+    function toggleAnswer(id) {
+        const answerSection = document.getElementById(`answer-${id}`);
+        answerSection.classList.toggle('show');
+    }
+
+    // Search questions
+    function searchQuestions() {
+        renderQuestions();
+    }
+
+    // Initialize on page load
+    init();
+</script>
+{% endblock %}
